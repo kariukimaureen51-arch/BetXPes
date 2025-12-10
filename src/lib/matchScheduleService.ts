@@ -23,7 +23,7 @@ export interface ScheduledMatch {
 }
 
 const STORAGE_KEY = 'global_match_schedule';
-const DEFAULT_INTERVAL = 30; // Default 30 minutes between matches
+const DEFAULT_INTERVAL = 2; // 2 minutes between matches (was 30)
 
 /**
  * Initialize or get the global schedule
