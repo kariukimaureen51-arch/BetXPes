@@ -722,6 +722,24 @@ const BetXPesa = () => {
     
     return () => clearInterval(interval);
   }, []);
+
+  // Sync selectedTimeSlot with liveTimeframeIdx automatically (keep viewing current live matches)
+  React.useEffect(() => {
+    if (!timeSlots || timeSlots.length === 0) return;
+    
+    const isGlobalTimeActive = localStorage.getItem('global_match_schedule_initialized') !== null;
+    if (!isGlobalTimeActive) return;
+    
+    // Only auto-sync if user is viewing the live timeframe (not browsing history)
+    if (liveTimeframeIdx >= 0 && liveTimeframeIdx < timeSlots.length) {
+      // Check if we're at the live timeframe
+      if (currentTimeframeIdx === liveTimeframeIdx) {
+        // Auto-update selectedTimeSlot to match the live timeframe
+        setSelectedTimeSlot(timeSlots[liveTimeframeIdx]);
+        setCurrentTimeframeIdx(liveTimeframeIdx);
+      }
+    }
+  }, [liveTimeframeIdx, timeSlots]);
   
   // Track previous match state to detect transitions
   const [prevMatchState, setPrevMatchState] = React.useState<string>('pre-countdown');
