@@ -607,10 +607,11 @@ const BetXPesa = () => {
     let syncedTimeframeIdx = 0;
     
     if (isGlobalTimeActive) {
-      console.log('✅ Global time system is active - SKIPPING week-based state in country change');
-      syncedTimeframeIdx = 0;
-      setCurrentTimeframeIdx(0);
-      setLiveTimeframeIdx(0);
+      console.log('✅ Global time system is active - using real-time timeframe');
+      // Get the current real-time timeframe index instead of defaulting to 0
+      syncedTimeframeIdx = getCurrentTimeframeIdx();
+      setCurrentTimeframeIdx(syncedTimeframeIdx);
+      setLiveTimeframeIdx(syncedTimeframeIdx);
     } else {
       // Load the synchronized system state to show current week to all users
       const currentSystemState = getSystemState();
