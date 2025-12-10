@@ -312,14 +312,13 @@ const Account = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-6xl mx-auto">
-        <Button variant="ghost" onClick={() => navigate("/")} className="mb-6">
+        <Button variant="ghost" onClick={() => navigate("/betting")} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Betting
         </Button>
 
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">My Account</h1>
-          <p className="text-muted-foreground">Profile • Analytics • Settings • Security</p>
         </div>
 
         {/* Primary Balance Card with Quick Stats */}
@@ -604,7 +603,7 @@ const Account = () => {
                   <CardContent className="p-12 text-center">
                     <Activity className="w-12 h-12 mx-auto text-muted-foreground mb-4 opacity-50" />
                     <p className="text-muted-foreground">No bets placed yet. Start betting to see your statistics!</p>
-                    <Button onClick={() => navigate("/")} className="mt-4">Place Your First Bet</Button>
+                    <Button onClick={() => navigate("/betting")} className="mt-4">Place Your First Bet</Button>
                   </CardContent>
                 </Card>
               )}

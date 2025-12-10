@@ -31,6 +31,7 @@ const Withdraw = () => {
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [history, setHistory] = useState<WithdrawRequest[]>([]);
   const [email, setEmail] = useState("");
+  const [showBalanceInUSD, setShowBalanceInUSD] = useState(true); // Default to USD
 
   const MIN_WITHDRAW = 100;
   const MAX_WITHDRAW = 50000;
@@ -411,9 +412,34 @@ const Withdraw = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-100 text-sm mb-2">Available Balance</p>
-                  <p className="text-3xl md:text-4xl font-bold">KES {balance.toLocaleString()}</p>
+                  <p className="text-3xl md:text-4xl font-bold">
+                    {showBalanceInUSD ? `$${(balance / EXCHANGE_RATE).toFixed(2)}` : `KES ${balance.toLocaleString()}`}
+                  </p>
                 </div>
                 <Wallet className="w-12 h-12 opacity-20" />
+              </div>
+              {/* Currency Toggle */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowBalanceInUSD(true)}
+                  className={`flex-1 py-2 px-3 rounded-lg font-semibold transition-all ${
+                    showBalanceInUSD
+                      ? 'bg-white text-blue-600'
+                      : 'bg-blue-400/30 text-blue-50 border border-blue-300'
+                  }`}
+                >
+                  USD ($)
+                </button>
+                <button
+                  onClick={() => setShowBalanceInUSD(false)}
+                  className={`flex-1 py-2 px-3 rounded-lg font-semibold transition-all ${
+                    !showBalanceInUSD
+                      ? 'bg-white text-blue-600'
+                      : 'bg-blue-400/30 text-blue-50 border border-blue-300'
+                  }`}
+                >
+                  KES (Ksh)
+                </button>
               </div>
               {/* Exchange Rate Info */}
               <div className="bg-blue-400/30 rounded-lg p-3 border border-blue-300">
@@ -561,7 +587,7 @@ const Withdraw = () => {
         {history.length > 0 && (
           <Card className="shadow-lg">
             <CardHeader className="bg-slate-50 border-b">
-              <CardTitle className="text-lg">Recent Withdrawals</CardTitle>
+              <CardTitle className="text-lg text-black">Recent Withdrawals</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">

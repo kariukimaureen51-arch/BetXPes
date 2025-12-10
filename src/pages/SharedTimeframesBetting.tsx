@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { getAdminSettings, saveAdminSettings, checkAndAutoReshuffle } from "@/utils/matchGenerator";
 import { leagues } from "@/data/leagues";
-import UserNotifications from "@/components/UserNotifications";
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect } from "react";
 import { useBetSlipHistory } from "@/hooks/useBetSlipHistory";
@@ -955,7 +954,9 @@ const BetXPesa = () => {
               awayGoals: sim.awayGoals,
               winner: sim.winner,
               time: new Date().toLocaleString(),
-              country: selectedCountry
+              country: selectedCountry,
+              week: currentTimeframeIdx + 1, // Add week number
+              timeframeIdx: currentTimeframeIdx
             });
             console.log(`🎮 [MATCH FLOW]   ✓ Saved to history`);
             
@@ -1262,7 +1263,6 @@ const BetXPesa = () => {
           </div>
         </div>
       )}
-      <UserNotifications />
       <BettingHeader />
       <NavigationTabs />
       <div className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 max-w-7xl mx-auto">
@@ -1289,9 +1289,12 @@ const BetXPesa = () => {
               {matchHistory.length === 0 ? (
                 <div className="text-center py-6 sm:py-8 text-slate-400 text-sm sm:text-base">No match history yet.</div>
               ) : (
-                matchHistory.slice().reverse().map((mh, idx) => (
+                matchHistory.slice().reverse().filter(mh => mh.week !== undefined && mh.week !== null).map((mh, idx) => (
                   <div key={idx} className="border border-blue-500/30 rounded-lg p-2 sm:p-3 flex flex-col bg-gradient-to-br from-slate-800/50 to-slate-900/50 hover:border-blue-400/50 transition-all duration-300">
-                    <div className="font-bold text-cyan-300 text-sm sm:text-base">{mh.homeTeam} vs {mh.awayTeam}</div>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="font-bold text-cyan-300 text-sm sm:text-base">{mh.homeTeam} vs {mh.awayTeam}</div>
+                      <div className="text-xs font-bold bg-blue-600/50 text-blue-200 px-2 py-1 rounded">Week {mh.week}</div>
+                    </div>
                     <div className="text-slate-300 text-xs sm:text-sm">Score: <span className="font-bold text-yellow-400">{mh.homeGoals} - {mh.awayGoals}</span></div>
                     <div className="text-slate-300 text-xs sm:text-sm">Winner: <span className="font-bold text-green-400">{mh.winner}</span></div>
                     <div className="text-xs text-slate-500 mt-1">{mh.time} • {mh.country}</div>

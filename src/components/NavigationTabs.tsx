@@ -1,4 +1,4 @@
-import { Trophy, BarChart3, Gift, FileText, Info } from "lucide-react";
+import { FileText } from "lucide-react";
 
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,14 +7,13 @@ const NavigationTabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const tabs = [
-    { id: "market", label: "Market", icon: Trophy, path: "/" },
     { id: "mybets", label: "My Bets", icon: FileText, path: "/mybets" },
   ];
 
   return (
     <div className="flex items-center gap-2 px-4 py-3 bg-card border-b border-border">
       {tabs.map((tab) => {
-        const isActive = location.pathname === tab.path || (tab.id === "market" && location.pathname === "/");
+        const isActive = location.pathname === tab.path;
         return (
           <button
             key={tab.id}
@@ -35,9 +34,6 @@ const NavigationTabs = () => {
           </button>
         );
       })}
-      <button className="ml-auto p-2 rounded-full bg-accent text-accent-foreground">
-        <Info className="w-5 h-5" />
-      </button>
     </div>
   );
 };

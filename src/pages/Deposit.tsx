@@ -28,9 +28,11 @@ const Deposit = () => {
   const [depositAmount, setDepositAmount] = useState<number>(0);
   const [history, setHistory] = useState<DepositRequest[]>([]);
   const [email, setEmail] = useState("");
+  const [showBalanceInUSD, setShowBalanceInUSD] = useState(true); // Default to USD
 
   const MIN_DEPOSIT = 50;
   const MAX_DEPOSIT = 100000;
+  const EXCHANGE_RATE = 130; // 1 USD = 130 KES
 
   // Function to refresh balance and deposit history
   const refreshUserData = async (userIdToUse?: string) => {
@@ -333,9 +335,34 @@ const Deposit = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-green-100 text-sm mb-2">Current Balance</p>
-                  <p className="text-3xl md:text-4xl font-bold">KES {balance.toLocaleString()}</p>
+                  <p className="text-3xl md:text-4xl font-bold">
+                    {showBalanceInUSD ? `$${(balance / EXCHANGE_RATE).toFixed(2)}` : `KES ${balance.toLocaleString()}`}
+                  </p>
                 </div>
                 <Wallet className="w-12 h-12 opacity-20" />
+              </div>
+              {/* Currency Toggle */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowBalanceInUSD(true)}
+                  className={`flex-1 py-2 px-3 rounded-lg font-semibold transition-all ${
+                    showBalanceInUSD
+                      ? 'bg-white text-green-600'
+                      : 'bg-green-400/30 text-green-50 border border-green-300'
+                  }`}
+                >
+                  USD ($)
+                </button>
+                <button
+                  onClick={() => setShowBalanceInUSD(false)}
+                  className={`flex-1 py-2 px-3 rounded-lg font-semibold transition-all ${
+                    !showBalanceInUSD
+                      ? 'bg-white text-green-600'
+                      : 'bg-green-400/30 text-green-50 border border-green-300'
+                  }`}
+                >
+                  KES (Ksh)
+                </button>
               </div>
               {/* Exchange Rate Info */}
               <div className="bg-green-400/30 rounded-lg p-3 border border-green-300">
